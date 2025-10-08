@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roommate Wanted! - Madhav Varshney</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* Applying the Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Abstract Gradient Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.2), transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 40%);
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* Particle canvas layered beneath content */
+        #particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Subtle glass hover effect */
+        .glass-hover {
+            transition: transform 300ms ease, box-shadow 300ms ease, background-color 300ms ease;
+        }
+        .glass-hover:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            background-color: rgba(30, 41, 59, 0.55);
+        }
+
+        /* 3D tilt effect helpers */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            will-change: transform;
+        }
+        .tilt-shine {
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem; /* match rounded-2xl */
+            pointer-events: none;
+            background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 200ms ease;
+        }
+        .tilt-card:hover .tilt-shine { opacity: 1; }
+
+        /* Animated gradient title + glow */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animated-title {
+            background-image: linear-gradient(90deg, #ffffff, #60a5fa, #34d399, #a78bfa, #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 8s ease infinite;
+        }
+        .text-glow {
+            text-shadow: 0 8px 30px rgba(16,185,129,0.35), 0 0 14px rgba(99,102,241,0.25);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 antialiased selection:bg-emerald-500/20">
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="max-w-5xl mx-auto p-6 lg:p-8 space-y-20 lg:space-y-28 pb-24 sm:pb-0">
+
+        <header class="text-center pt-16 lg:pt-24" data-aos="fade-in">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight animated-title text-glow">
+                ROOMMATE WANTED! 🏡✨
+            </h1>
+            <p class="mt-4 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
+                Looking for a like-minded flatmate — Madhav Varshney, B.Tech IT (2nd Year)
+            </p>
+            <p class="mt-2 text-sm text-slate-500 font-medium tracking-wider">
+                Live smart. Stay clean. Build together.
+            </p>
+        </header>
+
+        <main class="space-y-16 lg:space-y-24">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+
+                <section data-aos="fade-up" data-aos-duration="800">
+                    <div class="relative p-8 rounded-2xl shadow-2xl bg-slate-800/40 backdrop-blur-lg border border-slate-700 border-t-4 border-t-blue-500 h-full glass-hover tilt-card" data-tilt>
+                        <h2 class="text-3xl font-bold text-white mb-6">Why Live With Me?</h2>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30">Clean & Organized</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">5G Connectivity</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-400/30">Startup Vibes</span>
+                        </div>
+                        <ul class="space-y-5">
+                            <li class="flex items-start gap-4">
+                                <span class="text-blue-400 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h3 class="font-semibold text-white">Prime University Location</h3>
+                                    <p class="text-slate-400 text-sm">Conveniently located within walking distance from campus. Save time, save travel.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="text-blue-400 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h3 class="font-semibold text-white">Tech & Business Hub</h3>
+                                    <p class="text-slate-400 text-sm">Perfect for deep discussions, collaborative projects, and mutual growth.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <span class="text-blue-400 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h3 class="font-semibold text-white">Modern Furnished Flat</h3>
+                                    <p class="text-slate-400 text-sm">AC, high-speed WiFi, and an ergonomic desk setup are all ready for you.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="text-blue-400 mt-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <h3 class="font-semibold text-white">Peaceful & Productive Vibe</h3>
+                                    <p class="text-slate-400 text-sm">A clean, organized space that respects your need for focused work and quiet time.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <span class="text-blue-400 mt-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                     </svg>
+                                </span>
+                                <div>
+                                    <h3 class="font-semibold text-white">Fitness-Oriented Lifestyle</h3>
+                                    <p class="text-slate-400 text-sm">Gym nearby + committed to a daily fitness routine. Let's stay healthy together.</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <span class="tilt-shine"></span>
+                    </div>
+                </section>
+
+                <section data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div class="relative p-8 rounded-2xl shadow-2xl bg-slate-800/40 backdrop-blur-lg border border-slate-700 border-t-4 border-t-red-500 h-full glass-hover tilt-card" data-tilt>
+                        <h2 class="text-3xl font-bold text-white mb-6">Who I'm Looking For</h2>
+                        <div class="flex flex-wrap gap-2 mb-5">
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">Disciplined</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30">Fitness‑Friendly</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full bg-violet-500/20 text-violet-300 border border-violet-400/30">Builder Mindset</span>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center gap-3">💡<span class="text-slate-300">Discipline & Cleanliness = Non-negotiable</span></li>
+                            <li class="flex items-center gap-3">🥗<span class="text-slate-300">Culinary King/Queen (basic cooking is a plus!)</span></li>
+                            <li class="flex items-center gap-3">🏋️<span class="text-slate-300">Gym Bro or Fitness Enthusiast</span></li>
+                            <li class="flex items-center gap-3">💼<span class="text-slate-300">Business / Tech Mindset (loves startup talk)</span></li>
+                            <li class="flex items-center gap-3">💻<span class="text-slate-300">Bonus: Skilled in code, design, or video editing</span></li>
+                        </ul>
+                        
+                        <div class="border border-emerald-500/50 bg-emerald-900/20 rounded-xl p-4 text-center shadow-lg backdrop-blur-md" style="transform: translateZ(20px);">
+                            <p class="text-sm font-medium text-emerald-400">MONTHLY BUDGET</p>
+                            <p class="text-2xl font-semibold text-emerald-300 mt-1">₹15,000 – ₹16,000</p>
+                        </div>
+                        <span class="tilt-shine"></span>
+                    </div>
+                </section>
+            </div>
+
+            <section class="text-center pt-8" data-aos="zoom-in" data-aos-duration="600">
+                <h2 class="text-3xl md:text-4xl font-bold text-white max-w-xl mx-auto">
+                    Think you’re the right fit? <br class="hidden sm:block"> Let’s make it happen!
+                </h2>
+                <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfv77XHLvtzEwjOby7lNcBJVPXEA9SrwsJxGG-Ig6OBNmxaRg/viewform?usp=header" target="_blank"
+                       class="w-full sm:w-auto text-center bg-gradient-to-r from-emerald-500 to-green-400 hover:from-emerald-400 hover:to-green-300 transition transform hover:-translate-y-1 shadow-xl rounded-full px-8 py-3 font-semibold text-white">
+                        Fill Out the Roommate Application Form 🚀
+                    </a>
+                    <a href="https://wa.me/917840069938" target="_blank"
+                       class="w-full sm:w-auto text-center border border-emerald-500 text-emerald-400 hover:bg-emerald-500 hover:text-white transition px-6 py-2.5 rounded-lg font-medium">
+                        DM Madhav on WhatsApp 📱
+                    </a>
+                </div>
+            </section>
+
+            <!-- Nearby & connectivity stats -->
+            <section class="pt-4" data-aos="fade-up" data-aos-duration="700">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
+                    <div class="rounded-2xl bg-slate-800/40 backdrop-blur-lg border border-slate-700 p-6 text-center glass-hover">
+                        <p class="text-4xl font-extrabold text-white" id="stat-5g">5G</p>
+                        <p class="mt-1 text-slate-400 text-sm">Connectivity</p>
+                    </div>
+                    <div class="rounded-2xl bg-slate-800/40 backdrop-blur-lg border border-slate-700 p-6 text-center glass-hover">
+                        <p class="text-4xl font-extrabold text-white" id="stat-groceries">100–190 m</p>
+                        <p class="mt-1 text-slate-400 text-sm">Groceries & Essentials</p>
+                    </div>
+                </div>
+            </section>
+
+            
+
+            <!-- FAQ Accordion -->
+            <section class="pt-6" data-aos="fade-up" data-aos-duration="700" data-aos-delay="150">
+                <h3 class="text-2xl font-bold text-white mb-4">FAQs</h3>
+                <div class="space-y-3" id="faq">
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>What’s the exact location?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Near university main gate, 5–7 minutes walk. Groceries & essentials within 100–190 m; gym ~300 m.
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>Are utilities included?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Electricity and internet are split fairly based on usage—usually minimal.
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>Guest policy?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Occasional guests are fine with prior heads‑up; no late‑night disturbance.
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>Quiet hours and work schedule?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Quiet hours after 10:30 PM on weekdays. Focused work vibes most evenings; headphones encouraged.
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>Cooking and kitchen usage?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Light cooking is welcome. Clean-as-you-go is expected. Shared basics (salt, oil, spices) optional.
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>Security and visitors?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Building has CCTV and guard. Visitors allowed with heads‑up. No late-night disturbance.
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/40 backdrop-blur-lg">
+                        <button class="w-full text-left px-5 py-4 font-semibold text-white flex items-center justify-between faq-toggle">
+                            <span>Lease duration and move‑in?</span>
+                            <span class="text-slate-400">+</span>
+                        </button>
+                        <div class="px-5 pb-4 text-slate-300 hidden">
+                            Prefer 6–12 months. Move‑in as soon as possible this weekend or after diwali holidays.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Back to top -->
+            <button id="backToTop" class="hidden fixed right-4 bottom-20 z-40 rounded-full bg-emerald-500 text-white px-4 py-3 shadow-lg hover:bg-emerald-400 transition">Top ↑</button>
+        </main>
+
+
+        <footer class="text-center py-8 border-t border-slate-800" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <p class="text-sm text-slate-500">
+                <span id="year"></span> · Made with ❤️ by Madhav Varshney 
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true, // Whether animation should happen only once - while scrolling down
+            duration: 800, // values from 0 to 3000, with step 50ms
+            easing: 'ease-in-out', // default easing for AOS animations
+        });
+    </script>
+    <script>
+        // Particle background (no dependencies)
+        (function() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const isMobile = window.innerWidth < 640;
+            const config = {
+                count: isMobile ? 40 : 80,
+                maxSpeed: isMobile ? 0.35 : 0.4,
+                linkDist: isMobile ? 90 : 120,
+                radius: 1.6
+            };
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            function rand(min, max) { return Math.random() * (max - min) + min; }
+            function create() {
+                particles = Array.from({ length: config.count }, () => ({
+                    x: rand(0, canvas.width),
+                    y: rand(0, canvas.height),
+                    vx: rand(-config.maxSpeed, config.maxSpeed),
+                    vy: rand(-config.maxSpeed, config.maxSpeed),
+                }));
+            }
+            create();
+            function step() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // draw links
+                for (let i = 0; i < particles.length; i++) {
+                    const a = particles[i];
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const b = particles[j];
+                        const dx = a.x - b.x, dy = a.y - b.y;
+                        const d = Math.hypot(dx, dy);
+                        if (d < config.linkDist) {
+                            const alpha = 1 - d / config.linkDist;
+                            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha * 0.25})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(a.x, a.y);
+                            ctx.lineTo(b.x, b.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                // draw points and update
+                for (const p of particles) {
+                    ctx.fillStyle = 'rgba(52, 211, 153, 0.7)';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, config.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                }
+                requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        })();
+
+        // FAQ toggles (accordion)
+        document.querySelectorAll('.faq-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.parentElement.querySelector('div');
+                const isHidden = content.classList.contains('hidden');
+                document.querySelectorAll('#faq div > div').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('#faq .faq-toggle span:last-child').forEach(s => s.textContent = '+');
+                if (isHidden) {
+                    content.classList.remove('hidden');
+                    btn.querySelector('span:last-child').textContent = '−';
+                }
+            });
+        });
+
+        // Back to top visibility
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (!backToTop) return;
+            const show = window.scrollY > 600;
+            backToTop.classList.toggle('hidden', !show);
+        });
+        if (backToTop) backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Dynamic year in footer
+        const year = document.getElementById('year');
+        if (year) year.textContent = new Date().getFullYear();
+
+        // Lightweight 3D tilt on cards
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        function enableTilt(element) {
+            const maxTilt = 10; // degrees
+            function onMove(e) {
+                const rect = element.getBoundingClientRect();
+                const mx = (e.clientX - rect.left) / rect.width; // 0..1
+                const my = (e.clientY - rect.top) / rect.height; // 0..1
+                const tiltX = (0.5 - my) * maxTilt;
+                const tiltY = (mx - 0.5) * maxTilt;
+                element.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+                element.style.transition = 'transform 60ms linear';
+                element.style.transformStyle = 'preserve-3d';
+                // Shine
+                element.style.setProperty('--mx', `${mx * 100}%`);
+                element.style.setProperty('--my', `${my * 100}%`);
+            }
+            function onLeave() {
+                element.style.transition = 'transform 300ms ease';
+                element.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+            element.addEventListener('mousemove', onMove);
+            element.addEventListener('mouseleave', onLeave);
+        }
+        if (!prefersReduced && !isTouch) {
+            document.querySelectorAll('[data-tilt]').forEach(enableTilt);
+        }
+    </script>
+</body>
+</html>
